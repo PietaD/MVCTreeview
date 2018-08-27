@@ -1,0 +1,102 @@
+﻿@model List<MVCTreeview.Models.Employee>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Employees Tree view</h2>
+
+@*CSS styles*@
+<style>
+    .newcollapse {
+        width: 15px;
+        background: url('../../Images/chevron-prawo.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 15px;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .expand {
+        width: 15px;
+        background: url('../../Images/chevron-dol.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 15px;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+
+</style>
+
+@*helper recursive function to display tree view which iterates trough list items*@
+@helper GetTreeView(List<MVCTreeview.Models.Employee> emps, int parentID)
+{
+    foreach (var item in emps.Where(e => e.ManagerID.Equals(parentID)))
+    {
+        <li>
+            @{var children = emps.Where(e => e.ManagerID.Equals(item.EmployeeID)).Count();}
+
+            @if (children > 0)
+            {
+                //placeholder for css style when item has submenu (children)
+                <span class="newcollapse collapsible">&nbsp;</span>
+            }
+
+            else
+            {
+                //gap for items without submenu
+                <span style="width:15px; display:inline-block">&nbsp;</span>
+            }
+
+            @* build html elements in each iteration to show list elements with CRUD actions*@
+            <span>@item.EmployeeName</span>
+            <span>
+                @Html.ActionLink("Edit", "Edit", new { id = item.EmployeeID }) |
+                @Html.ActionLink("AddNew", "Create", new { id = item.EmployeeID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.EmployeeID })
+            </span>
+
+            @* Return to function with new parameter to populate lower levels of list*@
+            @if (children > 0)
+            {
+                <ul>@GetTreeView(emps, item.EmployeeID)</ul>
+            }
+        </li>
+    }
+}
+
+@* Calling helper function to get tree view*@
+<div style="border: solid 1px black">
+    <div class="structure">
+        @if (Model != null && Model.Count > 0)
+        {
+            //helper function call with proper arguments -> ordered in controller to get root (top of tree) element
+            <ul>
+                @GetTreeView(Model, Model.FirstOrDefault().EmployeeID)
+            </ul>
+        }
+    </div>
+</div>
+
+@*Section for scripts*@
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            //Hide 'children nodes'
+            $(".structure li>ul").css('display', 'none'); 
+
+            //Click arrow -> change css class to hide-expand content 
+            $(".collapsible").click(function (e) {
+                $(this).toggleClass("newcollapse expand");
+
+                //Slide effect
+                $(this).closest('li').children('ul').slideToggle();
+            });
+        });
+    </script>
+    }
+
