@@ -20,18 +20,18 @@ namespace MVCTreeview.Migrations.EmployeeMigrations
 
             //context.Employees.AddOrUpdate(
             //  p => p.EmployeeName,
-            //  new Employee { EmployeeName = "Root", EmployeeID = 1 },
-            //  new Employee { EmployeeName = "John", ManagerID = 1 },
-            //  new Employee { EmployeeName = "Thomas", ManagerID = 4 },
-            //  new Employee { EmployeeName = "Eric", ManagerID = 1 },
-            //  new Employee { EmployeeName = "Jessica", ManagerID = 4 },
-            //  new Employee { EmployeeName = "Kate", ManagerID = 2 },
-            //  new Employee { EmployeeName = "Bob", ManagerID = 6 },
-            //  new Employee { EmployeeName = "Steven", ManagerID = 7 },
-            //  new Employee { EmployeeName = "Joanna", ManagerID = 7 },
-            //  new Employee { EmployeeName = "Tim", ManagerID = 2 },
-            //  new Employee { EmployeeName = "Rebeca", ManagerID = 2 },
-            //  new Employee { EmployeeName = "Peter", ManagerID = 8 }
+            //  new Employee { EmployeeID = 1, EmployeeName = "Root"},
+            //  new Employee { EmployeeID = 2, EmployeeName = "John",   ManagerID = 1 },
+            //  new Employee { EmployeeID = 3, EmployeeName = "Thomas", ManagerID = 4 },
+            //  new Employee { EmployeeID = 4, EmployeeName = "Eric",   ManagerID = 1 },
+            //  new Employee { EmployeeID = 5, EmployeeName = "Jessica", ManagerID = 4 },
+            //  new Employee { EmployeeID = 6, EmployeeName = "Kate",    ManagerID = 2 },
+            //  new Employee { EmployeeID = 7, EmployeeName = "Bob",    ManagerID = 6 },
+            //  new Employee { EmployeeID = 8, EmployeeName = "Steven", ManagerID = 7 },
+            //  new Employee { EmployeeID = 9, EmployeeName = "Joanna", ManagerID = 7 },
+            //  new Employee { EmployeeID = 10, EmployeeName = "Tim",    ManagerID = 2 },
+            //  new Employee { EmployeeID = 11, EmployeeName = "Rebeca", ManagerID = 2 },
+            //  new Employee { EmployeeID = 12, EmployeeName = "Peter",  ManagerID = 8 }
             //);
         }
     }

@@ -41,7 +41,7 @@
             @if (children > 0)
             {
                 //placeholder for css style when item has submenu (children)
-                <span class="newcollapse collapsible">&nbsp;</span>
+                <span class="expand collapsible">&nbsp;</span>
             }
 
             else
@@ -71,10 +71,19 @@
 @* Calling helper function to get tree view*@
 <div style="border: solid 1px black">
     <div class="structure">
-        <span class="newcollapse allcollapse">&nbsp;</span>
+
+        @* Root elements *@
+        <div style="display: inline">
+            <span class="expand allcollapse">&nbsp;</span>
+            <span>@Model.FirstOrDefault().EmployeeName</span>
+            <span style="font-size: 12px; padding-left: 15px">
+                @Html.ActionLink("Add New", "Create", new { id = Model.FirstOrDefault().EmployeeID })
+            </span>
+        </div>
+        
         @if (Model != null && Model.Count > 0)
         {
-            //call helper function with proper arguments -> ordered in controller to get root (top of tree) element
+            //call helper function to populate list with proper arguments -> ordered in controller to get root (top of tree) element
             <ul>
                 @GetTreeView(Model, Model.FirstOrDefault().EmployeeID)
             </ul>
@@ -88,10 +97,7 @@
         $(document).ready(function () {
 
             // if steering variable
-            var visible = false;
-
-            //Hide 'children nodes'
-            $(".structure li>ul").css('display', 'none'); 
+            var visible = true;
 
             //Onclick hide-expand all tree with submenus arrows fix
             $(".allcollapse").click(function (e) {
@@ -111,6 +117,7 @@
                     visible = false;
                 }
             });
+
             //Click arrow -> change css class to hide-expand content 
             $(".collapsible").click(function (e) {
                 $(this).toggleClass("newcollapse expand");

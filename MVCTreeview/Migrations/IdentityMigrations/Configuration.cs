@@ -44,7 +44,6 @@ namespace MVCTreeview.Migrations.IdentityMigrations
                 if (chkUser.Succeeded)
                 {
                     var result1 = UserManager.AddToRole(user.Id, "Admin");
-
                 }
             }
         }

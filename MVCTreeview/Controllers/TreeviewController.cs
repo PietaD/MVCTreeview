@@ -39,7 +39,7 @@ namespace MVCTreeview.Controllers
         // POST: Treeview/Create
         // Add new node below selected Employee
         [HttpPost]
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create(FormCollection collection, int id = 5)
         {
             try
@@ -84,10 +84,10 @@ namespace MVCTreeview.Controllers
                 .Where(s => s.EmployeeID == id)
                 .FirstOrDefault();
 
+                //editing record
                 query.EmployeeName = collection["EmployeeName"];
                 query.ManagerID = Int32.Parse(collection["ManagerID"]);
-
-
+                
                 context.SaveChanges();
 
                 return RedirectToAction("Index");
@@ -148,41 +148,76 @@ namespace MVCTreeview.Controllers
         }
 
         // GET: Treeview/DeleteAll/6
+        // Return view with list of elements to delete
         [Authorize(Roles = "Admin")]
         public ActionResult DeleteAll(int id = 6)
         {
-            var query = context.Employees
-                .Where(s => s.EmployeeID == id)
-                .FirstOrDefault();
+            List<Employee> emps = new List<Employee>();
+            emps = context.Employees.ToList();
+            List<Employee> branchlist = new List<Employee>();
 
-            return View(query);
+            branchlist = GetBranch(emps, id);
+
+            //add selected record 
+            branchlist.Add(context.Employees.Where(s => s.EmployeeID.Equals(id)).FirstOrDefault());
+            
+            return View(branchlist);
         }
 
         // POST: Treeview/DeleteAll/6
-        // Delete all branch
+        // Delete all in branch
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public ActionResult DeleteAll(FormCollection collection, int id = 6)
         {
             try
             {
-                //foreach (var item in emps.Where(e => e.ManagerID.Equals(parentID)))
-                //{
-                //    var children = emps.Where(e => e.ManagerID.Equals(item.EmployeeID)).Count();
+                List<Employee> emps = new List<Employee>();
+                emps = context.Employees.ToList();
+                List<Employee> branchlist = new List<Employee>();
+                branchlist = GetBranch(emps, id);
+                branchlist.Add(context.Employees.Where(s => s.EmployeeID.Equals(id)).FirstOrDefault());
 
-                //    if (children > 0)
-                //    {
-                //        return RedirectToAction ("DeleteAll", children.Count)
-                //    }
-                //}
-                    
+                //changing Foreign Key (ManagerID) to avoid empty pointers when deleting
+                foreach (var item in branchlist)
+                {
+                    item.ManagerID = item.EmployeeID;
+                }
 
+                // delete records
+                foreach (var item in branchlist)
+                {
+                    context.Employees.Remove(item);
+                    context.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
             catch
             {
                 return View();
             }
+        }
+
+        //List to store branch objects
+        List<Employee> branch = new List<Employee>();
+
+        //Recursive function used in DeleteAll (delete branch)
+        public List<Employee> GetBranch(List<Employee> emps, int parentID ) 
+        {
+            foreach (var item in emps.Where(e => e.ManagerID.Equals(parentID)))
+            {
+                var children = emps.Where(e => e.ManagerID.Equals(item.EmployeeID)).Count();
+                
+                    branch.Add(item);
+
+                    if (children > 0)
+                    {
+                        GetBranch(emps, item.EmployeeID);
+                    }
+                
+            }
+
+            return (branch);
         }
     }
 }

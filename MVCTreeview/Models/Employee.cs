@@ -18,6 +18,4 @@ namespace MVCTreeview.Models
         public Employee Manager { get; set; }
 
     }
-
-    
 }

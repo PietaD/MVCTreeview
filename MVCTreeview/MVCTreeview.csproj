@@ -285,6 +285,7 @@
     <Content Include="Views\Treeview\Edit.cshtml" />
     <Content Include="Views\Treeview\Create.cshtml" />
     <Content Include="Views\Treeview\Delete.cshtml" />
+    <Content Include="Views\Treeview\DeleteAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
