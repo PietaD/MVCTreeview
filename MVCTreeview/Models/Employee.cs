@@ -16,5 +16,8 @@ namespace MVCTreeview.Models
 
         //Navigation property
         public Employee Manager { get; set; }
+
     }
+
+    
 }

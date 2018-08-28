@@ -22,9 +22,10 @@ namespace MVCTreeview.Controllers
 
             return View(emps);
         }
-        
+
         // GET: Treeview/Create
         // Needed optional parameter 
+        [Authorize(Roles = "Admin")]
         public ActionResult Create(int id = 5)
         {
             //take Employee with id match with selected in form
@@ -38,6 +39,7 @@ namespace MVCTreeview.Controllers
         // POST: Treeview/Create
         // Add new node below selected Employee
         [HttpPost]
+        [Authorize(Roles ="Admin")]
         public ActionResult Create(FormCollection collection, int id = 5)
         {
             try
@@ -60,6 +62,7 @@ namespace MVCTreeview.Controllers
         }
 
         // GET: Treeview/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id)
         {
             var query = context.Employees
@@ -72,6 +75,7 @@ namespace MVCTreeview.Controllers
         // POST: Treeview/Edit/5
         // Edit selected item
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id, FormCollection collection)
         {
             try
@@ -94,7 +98,8 @@ namespace MVCTreeview.Controllers
             }
         }
 
-        // GET: Treeview/Delete/5
+        // GET: Treeview/Delete/6
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id = 6)
         {
             var query = context.Employees
@@ -104,9 +109,10 @@ namespace MVCTreeview.Controllers
             return View(query);
         }
 
-        // POST: Treeview/Delete/5
+        // POST: Treeview/Delete/6
         // Delete selected item and move its children to upper level (change managerID)
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(FormCollection collection, int id = 6)
         {
             try
@@ -132,6 +138,44 @@ namespace MVCTreeview.Controllers
 
                 context.Employees.Remove(selected);
                 context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Treeview/DeleteAll/6
+        [Authorize(Roles = "Admin")]
+        public ActionResult DeleteAll(int id = 6)
+        {
+            var query = context.Employees
+                .Where(s => s.EmployeeID == id)
+                .FirstOrDefault();
+
+            return View(query);
+        }
+
+        // POST: Treeview/DeleteAll/6
+        // Delete all branch
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult DeleteAll(FormCollection collection, int id = 6)
+        {
+            try
+            {
+                //foreach (var item in emps.Where(e => e.ManagerID.Equals(parentID)))
+                //{
+                //    var children = emps.Where(e => e.ManagerID.Equals(item.EmployeeID)).Count();
+
+                //    if (children > 0)
+                //    {
+                //        return RedirectToAction ("DeleteAll", children.Count)
+                //    }
+                //}
+                    
 
                 return RedirectToAction("Index");
             }

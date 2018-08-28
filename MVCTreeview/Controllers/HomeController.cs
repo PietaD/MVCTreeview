@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace MVCTreeview.Controllers
 {
+    //login user@user.com PW: ZAQ!2wsx
     public class HomeController : Controller
     {
         public ActionResult Index()
